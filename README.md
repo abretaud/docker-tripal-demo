@@ -1,7 +1,5 @@
 # Tripal Demo using Docker
 
-[![DOI](https://zenodo.org/badge/10899/erasche/docker-tripal.svg)](https://zenodo.org/badge/latestdoi/10899/erasche/docker-tripal)
-
 ![Tripal Logo](http://tripal.info/sites/default/files/TripalLogo_dark.png)
 
 This repository allows to run a demo instance of Tripal v2.1, loaded with test data as described in the [Tripal Tutorial](http://tripal.info/node/122).
