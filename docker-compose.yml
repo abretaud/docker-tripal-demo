@@ -33,3 +33,5 @@ services:
 
     elasticsearch:
       image: elasticsearch
+      environment:
+        ES_JAVA_OPTS: "-Xms150m -Xmx150m"
