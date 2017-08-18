@@ -22,14 +22,30 @@ services:
         - "3300:80"
 
     db:
-      image: erasche/chado:latest
+      image: erasche/chado:1.31-jenkins110.1-pg9.5
       environment:
         - POSTGRES_PASSWORD=postgres
           # The default chado image would try to install the schema on first run,
           # we just want the tools to be available.
         - INSTALL_CHADO_SCHEMA=0
+        - INSTALL_YEAST_DATA=0
       volumes:
-        - /var/lib/postgresql/9.4/
+        - /var/lib/postgresql/data/
 
+    # This docker container is optimised for low memory usage
     elasticsearch:
-      image: elasticsearch
+        image: docker.elastic.co/elasticsearch/elasticsearch:5.5.1
+        mem_limit: 500m
+        ulimits:
+            memlock:
+                soft: -1
+                hard: -1
+        environment:
+            bootstrap.memory_lock: "true"
+            xpack.security.enabled: "false"
+            xpack.monitoring.enabled: "false"
+            xpack.ml.enabled: "false"
+            xpack.graph.enabled: "false"
+            xpack.watcher.enabled: "false"
+            cluster.routing.allocation.disk.threshold_enabled: "false"
+            ES_JAVA_OPTS: "-Xms150m -Xmx150m"

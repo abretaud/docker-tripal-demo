@@ -70,123 +70,134 @@ if [ ! -f Blastx_citrus_sinensis-orange1.1g015632m.g.fasta.0_vs_nr.out ]; then
     wget "http://www.gmod.org/mediawiki/images/2/24/Blastx_citrus_sinensis-orange1.1g015632m.g.fasta.0_vs_nr.out"
 fi
 
-
+# Create a specific auth yml file
 TRIPAL_URL="http://localhost:3300/tripal/"
 TRIPAL_USER="admin"
 TRIPAL_PASS="changeme"
-TRIPAL_AUTH="$TRIPAL_URL $TRIPAL_USER $TRIPAL_PASS"
+
+export TRIPAILLE_GLOBAL_CONFIG_PATH=`pwd`/.tripaille_auth.yml
+echo "__default: local" > $TRIPAILLE_GLOBAL_CONFIG_PATH
+echo "" >> $TRIPAILLE_GLOBAL_CONFIG_PATH
+echo "local:" >> $TRIPAILLE_GLOBAL_CONFIG_PATH
+echo "    tripal_url: \"$TRIPAL_URL\"" >> $TRIPAILLE_GLOBAL_CONFIG_PATH
+echo "    username: \"$TRIPAL_USER\"" >> $TRIPAILLE_GLOBAL_CONFIG_PATH
+echo "    password: \"$TRIPAL_PASS\"" >> $TRIPAILLE_GLOBAL_CONFIG_PATH
 
 # Create the organisms
-tripal create_organism \
-    --genus "Drosophila" \
+tripaille organism add_organism \
     --species "melanogaster" \
-    --common "fruitfly" \
-    --abbr "D.melanogaster" \
-    --description "The genome of D. melanogaster (sequenced in 2000, and curated at the FlyBase database) contains four pairs of chromosomes: an X/Y pair, and three autosomes labeled 2, 3, and 4. The fourth chromosome is so tiny that it is often ignored, aside from its important eyeless gene. The D. melanogaster sequenced genome of 165 million base pairs has been annotated[17] and contains approximately 13,767 protein-coding genes, which comprise ~20% of the genome out of a total of an estimated 14,000 genes. More than 60% of the genome appears to be functional non-protein-coding DNA involved in gene expression control. Determination of sex in Drosophila occurs by the ratio of X chromosomes to autosomes, not because of the presence of a Y chromosome as in human sex determination. Although the Y chromosome is entirely heterochromatic, it contains at least 16 genes, many of which are thought to have male-related functions." \
-    $TRIPAL_AUTH
+    --comment "The genome of D. melanogaster (sequenced in 2000, and curated at the FlyBase database) contains four pairs of chromosomes: an X/Y pair, and three autosomes labeled 2, 3, and 4. The fourth chromosome is so tiny that it is often ignored, aside from its important eyeless gene. The D. melanogaster sequenced genome of 165 million base pairs has been annotated[17] and contains approximately 13,767 protein-coding genes, which comprise ~20% of the genome out of a total of an estimated 14,000 genes. More than 60% of the genome appears to be functional non-protein-coding DNA involved in gene expression control. Determination of sex in Drosophila occurs by the ratio of X chromosomes to autosomes, not because of the presence of a Y chromosome as in human sex determination. Although the Y chromosome is entirely heterochromatic, it contains at least 16 genes, many of which are thought to have male-related functions." \
+    "Drosophila" \
+    "fruitfly" \
+    "D.melanogaster"
 
-tripal create_organism \
-    --genus "Citrus" \
+tripaille organism add_organism \
     --species "sinensis" \
-    --common "Sweet orange" \
-    --abbr "C. sinensis" \
-    --description "Sweet orange is the No.1 citrus production in the world, accounting for about 70% of the total. Brazil, Flordia (USA), and China are the three largest sweet orange producers. Sweet orange fruits have very tight peel and are classified into the hard-to-peel group. They are often used for juice processing, rather than fresh consumption. Valencia, Navel, Blood, Acidless, and other subtypes are bud mutants of common sweet orange varieties. Sweet orange is considered as an introgression of a natural hybrid of mandarin and pummelo; some estimates shows more mandarin genomic background than pummelo. The genome size is estimated at 380Mb across 9 haploid chromosomes." \
-    $TRIPAL_AUTH
+    --comment "Sweet orange is the No.1 citrus production in the world, accounting for about 70% of the total. Brazil, Flordia (USA), and China are the three largest sweet orange producers. Sweet orange fruits have very tight peel and are classified into the hard-to-peel group. They are often used for juice processing, rather than fresh consumption. Valencia, Navel, Blood, Acidless, and other subtypes are bud mutants of common sweet orange varieties. Sweet orange is considered as an introgression of a natural hybrid of mandarin and pummelo; some estimates shows more mandarin genomic background than pummelo. The genome size is estimated at 380Mb across 9 haploid chromosomes." \
+    "Citrus" \
+    "Sweet orange" \
+    "C. sinensis"
 
 # Create analysis
-tripal create_analysis \
-    --analysis-name "Whole Genome Assembly and Annotation of Citrus Sinensis (JGI)" \
-    --analysis-program "Performed by JGI" \
-    --analysis-program-version "v1.0" \
-    --analysis-source-name "JGI Citrus sinensis assembly/annotation v1.0 (154)" \
-    --analysis-source-uri "http://www.phytozome.net/citrus.php" \
-    --analysis-description "<p><strong><em>Note: </em>The following text comes from phytozome.org:</strong></p><p><u>Genome Size / Loci</u><br />This version (v.1) of the assembly is 319 Mb spread over 12,574 scaffolds. Half the genome is accounted for by 236 scaffolds 251 kb or longer. The current gene set (orange1.1) integrates 3.8 million ESTs with homology and ab initio-based gene predictions (see below). 25,376 protein-coding loci have been predicted, each with a primary transcript. An additional 20,771 alternative transcripts have been predicted, generating a total of 46,147 transcripts. 16,318 primary transcripts have EST support over at least 50% of their length. Two-fifths of the primary transcripts (10,813) have EST support over 100% of their length.</p><p><u>Sequencing Method</u><br />Genomic sequence was generated using a whole genome shotgun approach with 2Gb sequence coming from GS FLX Titanium; 2.4 Gb from FLX Standard; 440 Mb from Sanger paired-end libraries; 2.0 Gb from 454 paired-end libraries</p><p><u>Assembly Method</u><br />The 25.5 million 454 reads and 623k Sanger sequence reads were generated by a collaborative effort by 454 Life Sciences, University of Florida and JGI. The assembly was generated by Brian Desany at 454 Life Sciences using the Newbler assembler.</p><p><u>Identification of Repeats</u><br />A de novo repeat library was made by running RepeatModeler (Arian Smit, Robert Hubley) on the genome to produce a library of repeat sequences. Sequences with Pfam domains associated with non-TE functions were removed from the library of repeat sequences and the library was then used to mask 31% of the genome with RepeatMasker.</p><p><u>EST Alignments</u><br />We aligned the sweet orange EST sequences using Brian Haas's PASA pipeline which aligns ESTs to the best place in the genome via gmap, then filters hits to ensure proper splice boundaries.</p>" \
-    --analysis-date-executed "2011-02-01" \
-    $TRIPAL_AUTH
+tripaille analysis add_analysis \
+    --sourceuri "http://www.phytozome.net/citrus.php" \
+    --description "<p><strong><em>Note: </em>The following text comes from phytozome.org:</strong></p><p><u>Genome Size / Loci</u><br />This version (v.1) of the assembly is 319 Mb spread over 12,574 scaffolds. Half the genome is accounted for by 236 scaffolds 251 kb or longer. The current gene set (orange1.1) integrates 3.8 million ESTs with homology and ab initio-based gene predictions (see below). 25,376 protein-coding loci have been predicted, each with a primary transcript. An additional 20,771 alternative transcripts have been predicted, generating a total of 46,147 transcripts. 16,318 primary transcripts have EST support over at least 50% of their length. Two-fifths of the primary transcripts (10,813) have EST support over 100% of their length.</p><p><u>Sequencing Method</u><br />Genomic sequence was generated using a whole genome shotgun approach with 2Gb sequence coming from GS FLX Titanium; 2.4 Gb from FLX Standard; 440 Mb from Sanger paired-end libraries; 2.0 Gb from 454 paired-end libraries</p><p><u>Assembly Method</u><br />The 25.5 million 454 reads and 623k Sanger sequence reads were generated by a collaborative effort by 454 Life Sciences, University of Florida and JGI. The assembly was generated by Brian Desany at 454 Life Sciences using the Newbler assembler.</p><p><u>Identification of Repeats</u><br />A de novo repeat library was made by running RepeatModeler (Arian Smit, Robert Hubley) on the genome to produce a library of repeat sequences. Sequences with Pfam domains associated with non-TE functions were removed from the library of repeat sequences and the library was then used to mask 31% of the genome with RepeatMasker.</p><p><u>EST Alignments</u><br />We aligned the sweet orange EST sequences using Brian Haas's PASA pipeline which aligns ESTs to the best place in the genome via gmap, then filters hits to ensure proper splice boundaries.</p>" \
+    --date_executed "2011-02-01" \
+    "Whole Genome Assembly and Annotation of Citrus Sinensis (JGI)" \
+    "Performed by JGI" \
+    "v1.0" \
+    "JGI Citrus sinensis assembly/annotation v1.0 (154)"
 
 # Load annotation GFF3
-tripal load_gff3 \
+tripaille analysis load_gff3 \
     --organism "C. sinensis" \
     --analysis "Whole Genome Assembly and Annotation of Citrus Sinensis (JGI)" \
-    $TRIPAL_AUTH \
     /data/Citrus_sinensis-orange1.1g015632m.g.gff3
 
 # Load genome FASTA
-tripal load_fasta \
+tripaille analysis load_fasta \
     --organism "C. sinensis" \
     --analysis "Whole Genome Assembly and Annotation of Citrus Sinensis (JGI)" \
-    --sequence-type supercontig \
-    --method 'Update only' \
-    --match-type 'Name' \
-    $TRIPAL_AUTH \
+    --sequence_type supercontig \
+    --method 'update' \
+    --match_type 'name' \
     /data/Citrus_sinensis-scaffold00001.fasta
 
 # Load genes FASTA
-tripal load_fasta \
+tripaille analysis load_fasta \
     --organism "C. sinensis" \
     --analysis "Whole Genome Assembly and Annotation of Citrus Sinensis (JGI)" \
-    --sequence-type mRNA \
-    --method 'Update only' \
-    --match-type 'Name' \
-    $TRIPAL_AUTH \
+    --sequence_type mRNA \
+    --method 'update' \
+    --match_type 'name' \
     /data/Citrus_sinensis-orange1.1g015632m.g.fasta
 
 # Sync the features
-tripal sync_features \
-    --types gene mRNA \
-    --organism "C. sinensis" \
-    $TRIPAL_AUTH
+tripaille feature sync \
+    --types gene \
+    --types mRNA \
+    --organism "C. sinensis"
 
 # Load Blast results
-tripal load_blast \
-    --analysis-name "blastx Citrus sinensis v1.0 genes vs ExPASy SwissProt" \
-    --analysis-program "blastall" \
-    --analysis-program-version "2.2.25" \
-    --analysis-source-name "C. sinensis mRNA vs ExPASy SwissProt" \
-    --analysis-date-executed "2016-11-14" \
-    --analysis-algorithm "blastx" \
-    --analysis-description "C. sinensis mRNA sequences were BLAST'ed against the ExPASy SwissProt protein database using a local installation of BLAST on in-house linux server. Expectation value was set at 1e-6" \
+tripaille analysis load_blast \
+    --date_executed "2016-11-14" \
+    --algorithm "blastx" \
+    --description "C. sinensis mRNA sequences were BLAST'ed against the ExPASy SwissProt protein database using a local installation of BLAST on in-house linux server. Expectation value was set at 1e-6" \
     --blastdb "swissprot:display" \
-    --search-keywords \
-    --query-type "mRNA" \
-    --blast-parameters "-p blastx -e 1e-6 -m 7" \
-    $TRIPAL_AUTH \
+    --search_keywords \
+    --query_type "mRNA" \
+    --blast_parameters "-p blastx -e 1e-6 -m 7" \
+    "blastx Citrus sinensis v1.0 genes vs ExPASy SwissProt" \
+    "blastall" \
+    "2.2.25" \
+    "C. sinensis mRNA vs ExPASy SwissProt" \
     /data/Blastx_citrus_sinensis-orange1.1g015632m.g.fasta.0_vs_uniprot_sprot.fasta.out
 
 # Load Blast results
-tripal load_blast \
-    --analysis-name "blastx Citrus sinensis v1.0 genes vs NCBI nr" \
-    --analysis-program "blastall" \
-    --analysis-program-version "2.2.25" \
-    --analysis-source-name "C. sinensis mRNA vs NCBI nr" \
-    --analysis-date-executed "2016-11-14" \
-    --analysis-algorithm "blastx" \
-    --analysis-description "C. sinensis mRNA sequences were BLAST'ed against the NCBI nr protein database using a local installation of BLAST on in-house linux server. Expectation value was set at 1e-6" \
+tripaille analysis load_blast \
+    --date_executed "2016-11-14" \
+    --algorithm "blastx" \
+    --description "C. sinensis mRNA sequences were BLAST'ed against the NCBI nr protein database using a local installation of BLAST on in-house linux server. Expectation value was set at 1e-6" \
     --blastdb "genbank:protein" \
-    --search-keywords \
-    --query-type "mRNA" \
-    --blast-parameters "-p blastx -e 1e-6 -m 7" \
-    $TRIPAL_AUTH \
+    --search_keywords \
+    --query_type "mRNA" \
+    --blast_parameters "-p blastx -e 1e-6 -m 7" \
+    "blastx Citrus sinensis v1.0 genes vs NCBI nr" \
+    "blastall" \
+    "2.2.25" \
+    "C. sinensis mRNA vs NCBI nr" \
     /data/Blastx_citrus_sinensis-orange1.1g015632m.g.fasta.0_vs_uniprot_sprot.fasta.out
 
 # Load Interproscan results
-tripal load_interpro \
-    --analysis-name "InterPro Annotations of C. sinensis v1.0" \
-    --analysis-program "InterProScan" \
-    --analysis-program-version "4.8" \
-    --analysis-source-name "C. sinensis v1.0 mRNA" \
-    --analysis-date-executed "2016-11-14" \
-    --analysis-algorithm "iprscan" \
-    --analysis-description "C. sinensis mRNA sequences were mapped to IPR domains and GO terms using a local installation of InterProScan executed on a computational cluster. InterProScan date files used were MATCH_DATA_v32, DATA_v32.0 and PTHR_DATA v31.0." \
-    --interpro-parameters "iprscan -cli -goterms -ipr -format xml" \
-    --parse-go \
-    --query-type "mRNA" \
-    $TRIPAL_AUTH \
+tripaille analysis load_interpro \
+    --date_executed "2016-11-14" \
+    --algorithm "iprscan" \
+    --description "C. sinensis mRNA sequences were mapped to IPR domains and GO terms using a local installation of InterProScan executed on a computational cluster. InterProScan date files used were MATCH_DATA_v32, DATA_v32.0 and PTHR_DATA v31.0." \
+    --interpro_parameters "iprscan -cli -goterms -ipr -format xml" \
+    --parse_go \
+    --query_type "mRNA" \
+    "InterPro Annotations of C. sinensis v1.0" \
+    "InterProScan" \
+    "4.8" \
+    "C. sinensis v1.0 mRNA" \
     /data/Citrus_sinensis-orange1.1g015632m.g.iprscan.xml
 
+# Load Blast2go results
+# These results are not part of the Tripal tutorial, but were added to demonstrate the use of load_go
+tripaille analysis load_go \
+    --date_executed "2016-11-14" \
+    --query_type polypeptide \
+    "Blast2GO Annotation of C. sinensis v1.0" \
+    "Blast2GO" \
+    "2.5" \
+    "C. sinensis Blast2GO" \
+    /data/blast2go.gaf
 
 # Populate all materialized views
-tripal populate_mview $TRIPAL_AUTH
+tripaille db populate_mviews
 
 # Index everything
-tripal index $TRIPAL_AUTH
+tripaille db index
+
+# Create an index for organism table
+tripaille db index --mode table --table chado.organism --index_name organisms --fields "genus|string" --fields "species|string" --links 'species|http://localhost:8500/tripal/organism/[genus]/[species]'
