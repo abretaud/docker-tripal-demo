@@ -85,18 +85,18 @@ echo "    password: \"$TRIPAL_PASS\"" >> $TRIPAILLE_GLOBAL_CONFIG_PATH
 
 # Create the organisms
 tripaille organism add_organism \
-    --species "melanogaster" \
+    --common "fruitfly" \
+    --abbr "D.melanogaster" \
     --comment "The genome of D. melanogaster (sequenced in 2000, and curated at the FlyBase database) contains four pairs of chromosomes: an X/Y pair, and three autosomes labeled 2, 3, and 4. The fourth chromosome is so tiny that it is often ignored, aside from its important eyeless gene. The D. melanogaster sequenced genome of 165 million base pairs has been annotated[17] and contains approximately 13,767 protein-coding genes, which comprise ~20% of the genome out of a total of an estimated 14,000 genes. More than 60% of the genome appears to be functional non-protein-coding DNA involved in gene expression control. Determination of sex in Drosophila occurs by the ratio of X chromosomes to autosomes, not because of the presence of a Y chromosome as in human sex determination. Although the Y chromosome is entirely heterochromatic, it contains at least 16 genes, many of which are thought to have male-related functions." \
     "Drosophila" \
-    "fruitfly" \
-    "D.melanogaster"
+    "melanogaster"
 
 tripaille organism add_organism \
-    --species "sinensis" \
+    --common "Sweet orange" \
+    --abbr "C. sinensis" \
     --comment "Sweet orange is the No.1 citrus production in the world, accounting for about 70% of the total. Brazil, Flordia (USA), and China are the three largest sweet orange producers. Sweet orange fruits have very tight peel and are classified into the hard-to-peel group. They are often used for juice processing, rather than fresh consumption. Valencia, Navel, Blood, Acidless, and other subtypes are bud mutants of common sweet orange varieties. Sweet orange is considered as an introgression of a natural hybrid of mandarin and pummelo; some estimates shows more mandarin genomic background than pummelo. The genome size is estimated at 380Mb across 9 haploid chromosomes." \
     "Citrus" \
-    "Sweet orange" \
-    "C. sinensis"
+    "sinensis"
 
 # Create analysis
 tripaille analysis add_analysis \
@@ -187,6 +187,7 @@ tripaille analysis load_interpro \
 tripaille analysis load_go \
     --date_executed "2016-11-14" \
     --query_type polypeptide \
+    --organism "C. sinensis" \
     "Blast2GO Annotation of C. sinensis v1.0" \
     "Blast2GO" \
     "2.5" \
