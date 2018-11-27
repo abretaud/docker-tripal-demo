@@ -1,2 +1,3 @@
 .venv
 data/*itrus*
+.tripaille_auth.yml

@@ -194,6 +194,20 @@ tripaille analysis load_go \
     "C. sinensis Blast2GO" \
     /data/blast2go.gaf
 
+# Create analysis
+tripaille analysis add_analysis \
+    --date_executed "2011-02-01" \
+    "Expression data" \
+    "Some demo values" \
+    "v1.0" \
+    "Expression data"
+
+tripaille expression add_expression \
+    --match_type 'uniquename' \
+    '3' \
+    '6' \
+    /data/expression.tsv
+
 # Populate all materialized views
 tripaille db populate_mviews
 
