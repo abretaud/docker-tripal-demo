@@ -15,7 +15,7 @@ services:
       environment:
         UPLOAD_LIMIT: 20M
         MEMORY_LIMIT: 512M
-        TRIPAL_GIT_CLONE_MODULES: "https://github.com/abretaud/tripal_rest_api.git https://github.com/tripal/tripal_elasticsearch.git https://github.com/tripal/tripal_analysis_interpro.git[@c8949344afa30f2e45df54be09c05c6968ee3f2d] https://github.com/tripal/tripal_analysis_go.git[@05b4dcb4e1f6ef25ae9aa28fe402b684f768ed95] https://github.com/tripal/tripal_analysis_blast.git[@39bf72a635fdf8cae2258d166b2dd0fb699eb295]  https://github.com/tripal/tripal_analysis_expression.git[@7240039fdeb4579afd06bbcb989cb7795bd4c342]"
+        TRIPAL_GIT_CLONE_MODULES: "https://github.com/abretaud/tripal_rest_api.git[@cb1d52ffed0b8a5c1ac189b41c729c8ad93b1c21] https://github.com/tripal/tripal_elasticsearch.git[@bac9c5d35f4c38e906fe48f55064906af8ea029a] https://github.com/tripal/tripal_analysis_interpro.git[@c8949344afa30f2e45df54be09c05c6968ee3f2d] https://github.com/tripal/tripal_analysis_go.git[@05b4dcb4e1f6ef25ae9aa28fe402b684f768ed95] https://github.com/tripal/tripal_analysis_blast.git[@39bf72a635fdf8cae2258d166b2dd0fb699eb295]  https://github.com/tripal/tripal_analysis_expression.git[@7240039fdeb4579afd06bbcb989cb7795bd4c342]"
         TRIPAL_DOWNLOAD_MODULES: ""
         TRIPAL_ENABLE_MODULES: "tripal_analysis_blast tripal_analysis_interpro tripal_analysis_go tripal_rest_api tripal_elasticsearch tripal_analysis_expression"
       ports:
