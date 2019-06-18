@@ -1,3 +1,4 @@
 .venv
 data/*itrus*
+!data/Citrus_sinensis-orange1.1g015632m.g.iprscanv5.xml
 .tripaille_auth.yml
